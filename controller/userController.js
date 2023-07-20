@@ -1,12 +1,12 @@
-const express = require("express");
-const User = require("./models/userModels");
-const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import  express from "express";
+import { User } from "./models/userModels.js";
+import asyncHandler from "express-async-handler";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const app = express();
 
-const getUser = async (req,res) => {
+export const getUser = async (req,res) => {
     const token = req.cookies.token;
     const unsignedtoken = await jwt.decode(token,process.env.JWT_TOKEN);
     const user = await User.findOne({_id : unsignedtoken});
@@ -15,7 +15,7 @@ const getUser = async (req,res) => {
 }
 
 
-const registerUser = async (req,res) => {
+export const registerUser = async (req,res) => {
    try {
 
     const {name,email,password} = req.body;
@@ -40,7 +40,7 @@ const registerUser = async (req,res) => {
 
 }
 
-const logUserIn = async (req,res) => {
+export const logUserIn = async (req,res) => {
     try {
 
     const {email,password} = req.body;
@@ -76,7 +76,7 @@ const logUserIn = async (req,res) => {
 } 
 
 
-const logUserOut =  (req,res) => {
+export const logUserOut =  (req,res) => {
     res.cookie("token","",{
         expires : new Date (Date.now()),
         sameSite : process.env.DEV_ENV == "Development" ? "lax" : "none",
@@ -88,4 +88,4 @@ const logUserOut =  (req,res) => {
     });
 }
 
-module.exports = {getUser,registerUser,logUserIn,logUserOut};
+ 

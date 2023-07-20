@@ -1,9 +1,9 @@
-const express = require("express");
-const Tasks = require("./models/taskModels");
-const jwt = require("jsonwebtoken");
-const User = require("./models/userModels");
+import express from "express";
+import { Tasks } from "./models/taskModels.js";
+import jwt from "jsonwebtoken";
+import {User} from "./models/userModels.js";
 
-const createTask = async (req,res) => {
+export const createTask = async (req,res) => {
     const {title,description} = req.body;
 
     const {token} = req.cookies;
@@ -18,7 +18,7 @@ const createTask = async (req,res) => {
     });
 }
 
-const getTasks  = async (req,res) => {
+export const getTasks  = async (req,res) => {
     try {
         const {token} = req.cookies;
     const decoded = jwt.verify(token,process.env.JWT_TOKEN);
@@ -33,7 +33,7 @@ const getTasks  = async (req,res) => {
     }
 }
 
-const updateTask = async (req,res) => {
+export const updateTask = async (req,res) => {
    try {
     const task = await Tasks.findOne({_id : req.params.id});
     task.isCompleted = !task.isCompleted;
@@ -48,7 +48,7 @@ const updateTask = async (req,res) => {
    }
 }
 
-const deleteTask = async (req,res) => {
+export const deleteTask = async (req,res) => {
    try {
     const task = await Tasks.findOne({_id : req.params.id});
     task.isCompleted = !task.isCompleted;
@@ -62,4 +62,3 @@ const deleteTask = async (req,res) => {
    }
 }
 
-module.exports = {createTask,deleteTask,updateTask,getTasks}

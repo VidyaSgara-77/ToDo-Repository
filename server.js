@@ -1,13 +1,15 @@
-const express = require("express");
-const connectDb = require("./dbConnect/connectDB");
-const dotenv = require("dotenv").config();
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
+import express from "express";
+import {connectDb} from "./dbConnect/connectDB.js";
+import dotenv from "dotenv";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import userRouter from "./router/userRouter.js";
+import taskRouter from "./router/taskRouter.js";
 
+dotenv.config();
 
-
-const app = express();
+export const app = express();
 
 const port = process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({
@@ -23,8 +25,8 @@ app.use(cors({
 }));
 
 
-app.use("/api/v1/users",require("./router/userRouter"));
-app.use("/api/v1/tasks",require("./router/taskRouter"));
+app.use("/api/v1/users",userRouter);
+app.use("/api/v1/tasks",taskRouter);
 
 app.listen(port,() => {
     console.log(`App Running At ${port} on ${process.env.DEV_ENV} Mode` );
